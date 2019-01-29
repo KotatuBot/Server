@@ -1,0 +1,3 @@
+pip3 install ipaddress
+pip3 install pymysql
+pip3 install pings

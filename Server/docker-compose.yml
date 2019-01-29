@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  ftpserver:
+    build: './FTPServer'
+    volumes:
+      - /opt/Data:/go/App/Data
+    network_mode: host
+
+  traffic:
+    build: './Analysis/Traffic'
+    volumes:
+      - /opt/Data:/go/App/Data
+    container_name: trafficanalysis
+    network_mode: host
+
+  pcap:
+    build: './Analysis/Pcap'
+    volumes:
+      - /opt/Data:/go/App/Data
+    deploy:
+      resources:
+        limits:
+          memory: 6g
+    container_name: pcapanalysis
+    network_mode: host
+
