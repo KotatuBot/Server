@@ -7,7 +7,7 @@ import (
 )
 
 func Store(Date string, Recive_byte string, Send_byte string, Recive_packet string, Send_packet string) {
-	db, err := sql.Open("mysql", "root:mysql@tcp(localhost:3306)/Packets")
+	db, err := sql.Open("mysql", "root:mysql@tcp(mysql:3306)/Packets")
 	if err != nil {
 
 		panic(err.Error())

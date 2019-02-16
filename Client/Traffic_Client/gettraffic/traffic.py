@@ -8,11 +8,13 @@ import os
 
 class Get_trafic():
     def __init__(self):
-        pass
+        self.file_name = "/opt/Data/write.json" 
+        self.interface = ".*eth0*"
 
     def main(self):
         command = "cat /proc/net/dev"
-        pattern = ".*eth0*"
+        #pattern = ".*eth0*"
+        pattern = self.interface
         patterns = re.compile(pattern)
         data = subprocess.check_output(shlex.split(command))
 
@@ -31,9 +33,9 @@ class Get_trafic():
             "Send_packet": interface_list[10],
         }
 
-        with open("./Data/write.json","w") as fd:
+        with open(file_name,"w") as fd:
             json.dump(trafic_data,fd)
-            os.chmod("./Data/write.json",777)
+            os.chmod(file_name,777)
 
 
         return "success"

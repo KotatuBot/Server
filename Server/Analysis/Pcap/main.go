@@ -3,31 +3,24 @@ package main
 import (
 	"./analysis"
 	"fmt"
+	"os"
 	"time"
 )
 
 func main() {
 
 	// geting_list
-	//ip_data, mac_data := analysis.GetRegisterApi()
+	ip_data, mac_data := analysis.GetRegisterApi()
+	fmt.Println(ip_data)
 
 	var data_file string
-	data_file = "./Data/http.pcapng"
-	var ip_data [2]string
-	var mac_data [2]string
-
-	ip_data[0] = "172.21.1.63"
-	ip_data[1] = "172.217.161.238"
-
-	mac_data[0] = "00:50:56:c0:00:08"
-	mac_data[1] = "6a:00:01:e1:f1:11"
+	data_file = "/opt/Data/http.pcapng"
 
 	// infunity loop
 	for {
 		flag := analysis.Exists(data_file)
 		// in Data pcap
 		if flag == true {
-			//control_ip := "192.168.241.143"
 			fmt.Println("True")
 			//split file
 			analysis.Split()
@@ -39,11 +32,17 @@ func main() {
 				for number, control_ip := range ip_data {
 					analysis.Pcap_Master(control_ip, mac_data[number], file_path)
 					fmt.Println("sucess")
+
 				}
+				if err := os.Remove(file_path); err != nil {
+					fmt.Println("delete")
+				}
+			}
+			if err := os.Remove(data_file); err != nil {
+				fmt.Println("delete")
 			}
 		}
 
+		time.Sleep(5 * time.Second)
 	}
-	time.Sleep(100 * time.Second)
-	fmt.Println("sleep")
 }

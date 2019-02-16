@@ -1,21 +1,13 @@
 package analysis
 
 import (
-	"database/sql"
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
 	"strconv"
 	"strings"
 	"time"
 )
 
 func Parse_connect(control_ip string, session_data map[string]int) {
-
-	db, err := sql.Open("mysql", "root:mysql@tcp(localhost:3306)/Packets")
-	if err != nil {
-		panic(err.Error())
-	}
-	defer db.Close()
 
 	for key, _ := range session_data {
 		fmt.Println("Control IP")
@@ -24,28 +16,20 @@ func Parse_connect(control_ip string, session_data map[string]int) {
 		fmt.Println(key)
 		fmt.Println("Sessions")
 		fmt.Println(session_data[key])
+		sessions := strconv.Itoa(session_data[key])
 		city, country := Geo_search(key)
 		fmt.Println(city)
 		fmt.Println(country)
-		timer := time.Now().String()
+		timer := time.Now().Format("2016-01-03")
 		fmt.Println(timer)
 
-		result, err := db.Exec("INSERT INTO IoT_connect(Control_ip,Connect_ip,Country,City,Sessions,Date) VALUES(?,?,?,?,?,?)", control_ip, key, country, city, session_data[key], timer)
+		GenerateControl("http://localhost:8000/api/connect/", control_ip, key, country, city, sessions, timer)
+		fmt.Println("---------")
 
-		if err != nil {
-			panic(err.Error())
-		}
-		fmt.Println(result)
 	}
 }
 
 func Parse_port(ip_port_data map[string]int) {
-
-	db, err := sql.Open("mysql", "root:mysql@tcp(localhost:3306)/Packets")
-	if err != nil {
-		panic(err.Error())
-	}
-	defer db.Close()
 
 	for key, _ := range ip_port_data {
 		split_data := strings.Split(key, ",")
@@ -54,35 +38,26 @@ func Parse_port(ip_port_data map[string]int) {
 		session_number := strconv.Itoa(ip_port_data[key])
 		fmt.Println(session_number)
 
-		result, err := db.Exec("INSERT INTO IoT_port(Connect_ip,Port,Port_Sessions) VALUES(?,?,?)", split_data[0], split_data[1], session_number)
+		GeneratePort("http://localhost:8000/api/ports/", split_data[0], split_data[1], session_number)
 
-		if err != nil {
-			panic(err.Error())
-		}
-		fmt.Println(result)
 	}
 
 }
 
 func Parse_traffic(control_ip string, mac_address string, send_byte int, recv_byte int, send_packet int, recv_packet int) {
-	db, err := sql.Open("mysql", "root:mysql@tcp(localhost:3306)/Packets")
-	if err != nil {
-		panic(err.Error())
-	}
-	defer db.Close()
 
 	fmt.Println("Traffic")
 	fmt.Println(control_ip)
 	fmt.Println(mac_address)
 	fmt.Println(send_byte)
 	fmt.Println(recv_byte)
-	timer := time.Now().String()
-	fmt.Println(timer)
+	timers := time.Now().UTC()
+	timer := timers.Format("2006-01-02T15:04:05Z")
 
-	result, err := db.Exec("INSERT INTO IoT_eachtraffic(ip,macaddress,date,recv_byte,send_byte,recv_packet,send_packet) VALUES(?,?,?,?,?,?,?)", control_ip, mac_address, timer, recv_byte, send_byte, recv_packet, send_packet)
+	send_bytes := strconv.Itoa(send_byte)
+	recv_bytes := strconv.Itoa(recv_byte)
+	send_packets := strconv.Itoa(send_packet)
+	recv_packets := strconv.Itoa(recv_packet)
 
-	if err != nil {
-		panic(err.Error())
-	}
-	fmt.Println(result)
+	GenerateTraffic("http://localhost:8000/api/eachtraffic/", control_ip, mac_address, timer, recv_bytes, send_bytes, recv_packets, send_packets)
 }

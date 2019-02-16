@@ -32,5 +32,5 @@ func JsonParse() {
 	fmt.Println(td.Send_byte)
 	fmt.Println(td.Recive_packet)
 	fmt.Println(td.Send_packet)
-	Store(td.Date, td.Recive_byte, td.Send_byte, td.Recive_packet, td.Send_packet)
+	HttpPost("http://0.0.0.0:8000/api/traffic/", td.Date, td.Recive_byte, td.Send_byte, td.Recive_packet, td.Send_packet)
 }

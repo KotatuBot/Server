@@ -8,6 +8,7 @@ RUN mkdir Data
 RUN mkdir exectraffic
 ADD exectraffic exectraffic
 ADD main.go .
+ADD start.sh .
 RUN go get github.com/go-sql-driver/mysql
 RUN go build
-CMD ["sleep","80000"]
+CMD ["sh","start.sh"]

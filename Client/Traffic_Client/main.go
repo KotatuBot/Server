@@ -19,8 +19,8 @@ func main() {
 	fmt.Println("Traffic")
 	for value := 0; ; {
 		value--
-		time.Sleep(17 * time.Second)
+		time.Sleep(7 * time.Second)
 		gettraffic.GetTraffic()
-		send("127.0.0.1", "traffic")
+		//send("127.0.0.1", "traffic")
 	}
 }

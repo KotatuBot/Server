@@ -34,11 +34,9 @@ func Pcap_Master(control_ip string, mac_address string, pcapFile string) {
 	send_packet = 0
 	recv_packet = 0
 
-	fmt.Println(mac_address)
 	handle, err = pcap.OpenOffline(pcapFile)
 	fmt.Println(err)
 	if err == nil {
-		log.Fatal(err)
 		defer handle.Close()
 
 		packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
@@ -50,7 +48,7 @@ func Pcap_Master(control_ip string, mac_address string, pcapFile string) {
 				log.Println("Error:", err)
 				continue
 			}
-
+			fmt.Println("test")
 			ip_address, ports, send_byte_tip, recv_byte_tip, send_packet_tip, recv_packet_tip := PrintPacketInfo(control_ip, packet)
 
 			send_byte += send_byte_tip

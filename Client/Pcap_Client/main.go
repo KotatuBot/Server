@@ -22,7 +22,7 @@ func main() {
 		value--
 		//go func() {
 		getpcap.GetPcap()
-		send("127.0.0.1", "pcap")
+		//send("127.0.0.1", "pcap")
 
 		//}()
 		//getpcap.GetPcap()

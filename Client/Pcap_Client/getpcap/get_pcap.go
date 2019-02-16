@@ -7,9 +7,11 @@ import (
 )
 
 var (
-	interface_name string = "eth0"
-	Write_File     string = "./Data/http.pcapng"
-	Time_out       string = "duration:10"
+	//interface_name string = "enx3495db11dfe2"
+	interface_name string = "wlp3s0"
+
+	Write_File string = "/opt/Data/http.pcapng"
+	Time_out   string = "duration:10"
 )
 
 func GetPcap() {
